@@ -12,7 +12,6 @@ namespace BattleShipConsoleGame
     //Observer Pattern
     public class Player : IObserver
     {
-        //private ShipPlacementStrategy placementStrategy;
         public string Name { get; private set; }
         public GameBoard Board { get; private set; }
 
@@ -21,7 +20,6 @@ namespace BattleShipConsoleGame
             Name = name;
             Board = new GameBoard();
             Board.Follow(this);
-            //this.placementStrategy = placementStrategy;
         }
 
         public void Update()
@@ -37,7 +35,7 @@ namespace BattleShipConsoleGame
             {
                 Update();
                 Console.WriteLine();
-                Console.WriteLine($"{Name}, place your {shipType}:");
+                Console.WriteLine($"  {Name}, place your {shipType}:");
                 Ship ship = shipFactories[shipType].CreateShip();
                 
                 while (true)
@@ -45,16 +43,16 @@ namespace BattleShipConsoleGame
                     try
                     {
                         Console.WriteLine();
-                        Console.Write($"Enter starting X coordinate for {shipType} (0-9): ");
+                        Console.Write($"  Enter starting X coordinate for {shipType} (0-9): ");
                         int x = int.Parse(Console.ReadLine());
-                        Console.Write($"Enter starting Y coordinate for {shipType} (0-9): ");
+                        Console.Write($"  Enter starting Y coordinate for {shipType} (0-9): ");
                         int y = int.Parse(Console.ReadLine());
-                        Console.Write("Enter orientation (h for horizontal, v for vertical): ");
+                        Console.Write("  Enter orientation (h for horizontal, v for vertical): ");
                         char orientation = char.Parse(Console.ReadLine().ToLower());
 
                         if (orientation != 'h' && orientation != 'v')
                         {
-                            throw new FormatException("Invalid orientation. Enter 'h' or 'v'.");
+                            throw new FormatException("  Invalid orientation. Enter 'h' or 'v'.");
                         }
 
                         bool isHorizontal = orientation == 'h';
@@ -64,16 +62,16 @@ namespace BattleShipConsoleGame
                         }
                         else
                         {
-                            Console.WriteLine("Invalid placement. Try again.");
+                            Console.WriteLine("  Invalid placement. Try again.");
                         }
                     }
                     catch (FormatException ex)
                     {
-                        Console.WriteLine($"Invalid input: {ex.Message}");
+                        Console.WriteLine($"  Invalid input: {ex.Message}");
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("An error occurred. Please try again.");
+                        Console.WriteLine("  An error occurred. Please try again.");
                     }
                 }
                 
@@ -90,19 +88,19 @@ namespace BattleShipConsoleGame
                 try
                 {
                     
-                    Console.WriteLine($"{Name}, make your attack:");
-                    Console.Write("Enter X coordinate (0-9): ");
+                    Console.WriteLine($"  {Name}, make your attack:");
+                    Console.Write("  Enter X coordinate (0-9): ");
                     int x = int.Parse(Console.ReadLine());
-                    Console.Write("Enter Y coordinate (0-9): ");
+                    Console.Write("  Enter Y coordinate (0-9): ");
                     int y = int.Parse(Console.ReadLine());
 
                     if (x < 0 || x >= 10 || y < 0 || y >= 10)
                     {
-                        throw new FormatException("Coordinates must be between 0 and 9.");
+                        throw new FormatException("  Coordinates must be between 0 and 9.");
                     }
 
                     string result = opponent.Board.Attack(x, y);
-                    if (result == "This coordinate has already been attacked. Try again.")
+                    if (result == "  This coordinate has already been attacked. Try again.")
                     {
                         Console.WriteLine(result);
                         continue;
@@ -112,11 +110,11 @@ namespace BattleShipConsoleGame
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine($"Invalid input: {ex.Message}");
+                    Console.WriteLine($"  Invalid input: {ex.Message}");
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("An error occurred. Please try again.");
+                    Console.WriteLine("  An error occurred. Please try again.");
                 }
             }
         }

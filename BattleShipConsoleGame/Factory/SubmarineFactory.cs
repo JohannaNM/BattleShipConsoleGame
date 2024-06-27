@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BattleShipConsoleGame.Factory
 {
+    // Factory Method Pattern
     public class SubmarineFactory : ShipFactory
     {
         public override Ship CreateShip()

@@ -90,7 +90,7 @@ namespace BattleShipConsoleGame
 
             if (board[x, y] == 'X' || board[x, y] == 'O')
             {
-                return "This coordinate has already been attacked. Try again.";
+                return "  This coordinate has already been attacked. Try again.";
             }
 
             if (board[x, y] != '~' && board[x, y] != 'X' && board[x, y] != 'O')
@@ -103,15 +103,15 @@ namespace BattleShipConsoleGame
 
                 if (hitShip != null && hitShip.IsSunk)
                 {
-                    return ConsoleColors.Red + $"Hit and sunk a {hitShip.GetType().Name}!" + ConsoleColors.Reset;
+                    return ConsoleColors.Red + $"  Hit and sunk a {hitShip.GetType().Name}!" + ConsoleColors.Reset;
                 }
               
-                return "Hit!";
+                return "  Hit!";
             }
             else
             {
                 board[x, y] = 'O'; // Miss
-                return "Miss!";
+                return "  Miss!";
             }
             
         }
@@ -127,7 +127,7 @@ namespace BattleShipConsoleGame
             
             Console.WriteLine();
 
-            Console.Write("  ");
+            Console.Write("    ");
             for (int i = 0; i < Size; i++)
             {
                 Console.Write(i + " ");
@@ -136,7 +136,7 @@ namespace BattleShipConsoleGame
 
             for (int i = 0; i < Size; i++)
             {
-                Console.Write(i + " ");
+                Console.Write("  " + i + " ");
                 for (int j = 0; j < Size; j++)
                 {
                     char displayChar = board[i, j];
@@ -179,18 +179,29 @@ namespace BattleShipConsoleGame
                 }
                 Console.WriteLine();
             }
-            
+
         }
 
         public static void Welcome()
         {
             Console.WriteLine();
-            Console.WriteLine("*********************************************");
-            Console.WriteLine("*                BATTLESHIPS                *");
-            Console.WriteLine("*********************************************");
+            Console.WriteLine("  *********************************************************************");
+            Console.WriteLine("  *                            BATTLESHIPS                            *");
+            Console.WriteLine("  *********************************************************************");
             Console.WriteLine();
 
         }
         
+        public static void WelcomeMessage()
+        {
+            Console.WriteLine();
+            Console.WriteLine("  This is a guessing game where you will place your battle ships");
+            Console.WriteLine("  on a grid, and then shoot locations of the enemy grid trying");
+            Console.WriteLine("  to find and sink all of their ships.The first player to sink");
+            Console.WriteLine("  all the enemy ships wins.");
+            Console.WriteLine();
+            Console.WriteLine("  Press any key to start the game.");
+            
+        }
     }
 }
