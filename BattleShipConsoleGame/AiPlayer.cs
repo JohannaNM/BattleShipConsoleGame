@@ -15,21 +15,6 @@ namespace BattleShipConsoleGame
         private List<(int x, int y)> hitTargets = new List<(int x, int y)> ();
         private Queue<(int x, int y)> targetQueue = new Queue<(int x, int y)> ();
 
-        //private ShipPlacementStrategy placementStrategy;
-        //public AiPlayer(string name, ShipPlacementStrategy placementStrategy) : base(name)
-        //{
-        //    this.placementStrategy = placementStrategy;
-        //}
-
-        //public void StrategiPlaceShips(Dictionary<string, ShipFactory> shipfactories)
-        //{
-        //    foreach (var shipType in shipfactories.Keys)
-        //    {
-        //        Ship ship = shipfactories[shipType].CreateShip();
-        //        placementStrategy.StrategyPlaceShip(Board, ship);
-        //    }
-        //}
-
         public AiPlayer(string name) : base(name) { }
         
         new public void PlaceShips(Dictionary<string, ShipFactory> shipFactories)
@@ -80,9 +65,9 @@ namespace BattleShipConsoleGame
                 }
 
                 string result = opponent.Board.Attack(x, y);
-                if (result != "Invalid attack. Try again.")
+                if (result != "  Invalid attack. Try again.")
                 {
-                    Console.WriteLine($"{Name} attacked ({x}, {y}) and it was a {result.ToLower()}.");
+                    Console.WriteLine($"  {Name} attacked ({x}, {y}) and it was a {result.ToLower()}.");
 
                     if (result.Contains("Hit"))
                     {
@@ -117,7 +102,7 @@ namespace BattleShipConsoleGame
         public void DisplayHiddenBoard()
         {
             GameBoard.Welcome();
-            Console.WriteLine($"{Name}´s board:");
+            Console.WriteLine($"  {Name}´s board:");
             Board.DisplayBoard(false);
         }
     }
