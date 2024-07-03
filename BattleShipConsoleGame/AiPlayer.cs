@@ -12,11 +12,103 @@ namespace BattleShipConsoleGame
     public class AiPlayer : Player
     {
         private Random random = new Random();
-        private List<(int x, int y)> hitTargets = new List<(int x, int y)> ();
-        private Queue<(int x, int y)> targetQueue = new Queue<(int x, int y)> ();
+        private List<(int x, int y)> hitTargets = new List<(int x, int y)>();
+        private Queue<(int x, int y)> targetQueue = new Queue<(int x, int y)>();
+        private int[,] probabilityMap;
 
-        public AiPlayer(string name) : base(name) { }
-        
+        public AiPlayer(string name) : base(name)
+        {
+            InitializeProbabilityMap();
+        }
+
+        private void InitializeProbabilityMap()
+        {
+            probabilityMap = new int[10, 10];
+        }
+
+        private void UpdateProbabilityMap()
+        {
+            Array.Clear(probabilityMap, 0, probabilityMap.Length);
+
+            var ships = new List<Ship> { new Battleship(), new Cruiser(), new Destroyer(), new Submarine() };
+
+            foreach (var ship in ships)
+            {
+                if (ship.IsSunk)
+                {
+                    continue;
+                }
+
+                for (int x = 0; x < 10; x++)
+                {
+                    for (int y = 0; y < 10; y++)
+                    {
+                        if (CanPlaceShip(ship, x, y, true))
+                        {
+                            for (int i = 0; i < ship.Size; i++)
+                            {
+                                probabilityMap[x, y + i]++;
+                            }
+                        }
+                        if (CanPlaceShip(ship, x, y, false))
+                        {
+                            for (int i = 0; i < ship.Size; i++)
+                            {
+                                probabilityMap[x + i, y]++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            IncreaseProbabilityForAdjacentHits();
+        }
+
+        private bool CanPlaceShip(Ship ship, int x, int y, bool isHorizontal)
+        {
+            for (int i = 0; i < ship.Size; i++)
+            {
+                int nx = isHorizontal ? x : x + i;
+                int ny = isHorizontal ? y + i : y;
+                if (nx >= 10 || ny >= 10 || Board.GetCell(nx, ny) != '~')
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void IncreaseProbabilityForAdjacentHits()
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    if (Board.GetCell(x, y) == 'X')
+                    {
+                        foreach (var (nx, ny) in GetAdjacentCells(x, y))
+                        {
+                            if (nx >= 0 && nx < 10 && ny >= 0 && ny < 10 && Board.GetCell(nx, ny) == '~')
+                            {
+                                probabilityMap[nx, ny] += 2; // Increase probability for adjacent cells
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private List<(int, int)> GetAdjacentCells(int x, int y)
+        {
+            return new List<(int, int)>
+        {
+            (x - 1, y),
+            (x + 1, y),
+            (x, y - 1),
+            (x, y + 1)
+        };
+        }
+
         new public void PlaceShips(Dictionary<string, ShipFactory> shipFactories)
         {
             foreach (var shipType in shipFactories.Keys)
@@ -38,6 +130,8 @@ namespace BattleShipConsoleGame
 
         new public void Attack(Player opponent)
         {
+            UpdateProbabilityMap();
+
             while (true)
             {
                 int x, y;
@@ -46,29 +140,19 @@ namespace BattleShipConsoleGame
                 {
                     (x, y) = targetQueue.Dequeue();
                 }
-                //else
-                //{
-                //    do
-                //    {
-                //        x = random.Next(0, 10);
-                //        y = random.Next(0, 10);
-                //    }
-                //    while (opponent.Board.Attack(x, y) == "This coordinate has already been attacked. Try again.");
-                //}
                 else
                 {
-
-
-                    x = random.Next(0, 10);
-                    y = random.Next(0, 10);
-
+                    (x, y) = GetHighestProbabilityCell();
                 }
 
                 string result = opponent.Board.Attack(x, y);
                 if (result != "  Invalid attack. Try again.")
                 {
-                    if(result == "  This coordinate has already been attacked. Try again.")
-                    { Console.WriteLine(result); continue; }
+                    if (result == "  This coordinate has already been attacked. Try again.")
+                    {
+                        continue;
+                    }
+
                     GameBoard.Welcome();
                     Console.WriteLine(ConsoleColors.Red + $"  {Name} attacked ({x}, {y}) and it was a {result}." + ConsoleColors.Reset);
 
@@ -80,6 +164,31 @@ namespace BattleShipConsoleGame
                     break;
                 }
             }
+        }
+
+        private (int, int) GetHighestProbabilityCell()
+        {
+            int maxProbability = -1;
+            List<(int, int)> maxCells = new List<(int, int)>();
+
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    if (probabilityMap[x, y] > maxProbability && Board.GetCell(x, y) == '~')
+                    {
+                        maxProbability = probabilityMap[x, y];
+                        maxCells.Clear();
+                        maxCells.Add((x, y));
+                    }
+                    else if (probabilityMap[x, y] == maxProbability)
+                    {
+                        maxCells.Add((x, y));
+                    }
+                }
+            }
+
+            return maxCells[random.Next(maxCells.Count)];
         }
 
         private void AddAdjacentTargets(int x, int y)
@@ -105,8 +214,9 @@ namespace BattleShipConsoleGame
         public void DisplayHiddenBoard()
         {
             GameBoard.Welcome();
-            Console.WriteLine($"  {Name}´s board:");
+            Console.WriteLine($"  {Name}'s board:");
             Board.DisplayBoard(false);
         }
+
     }
 }

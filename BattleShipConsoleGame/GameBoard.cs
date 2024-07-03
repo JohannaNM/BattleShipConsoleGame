@@ -182,6 +182,10 @@ namespace BattleShipConsoleGame
 
         }
 
+        public char GetCell(int x, int y)
+        {
+            return board[x, y];
+        }
         public static void Welcome()
         {
             Console.WriteLine();
