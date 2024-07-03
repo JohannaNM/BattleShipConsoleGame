@@ -115,49 +115,6 @@ namespace BattleShipConsoleGame
                 }
             }
         }
-        //public void Start()
-        //{
-        //    Dictionary<string, ShipFactory> shipFactories = new Dictionary<string, ShipFactory>
-        //    {
-        //        { "Battleship", new BattleshipFactory() },
-        //        { "Cruiser", new CruiserFactory() },
-        //        { "Destroyer", new DestroyerFactory() },
-        //        { "Submarine", new SubmarineFactory() }
-        //    };
-
-        //    GameBoard.Welcome();
-        //    Console.Write("Enter your name: ");
-        //    string player1Name = Console.ReadLine();
-
-        //    Player player1 = new Player(player1Name);
-        //    AiPlayer player2 = new AiPlayer("Computer");
-        //    Console.Clear();
-
-        //    while (true)
-        //    {
-        //        Console.Clear();
-
-        //        player2.DisplayHiddenBoard();
-        //        player1.Attack(player2);
-        //        if (player2.HasLost())
-        //        {
-        //            Console.WriteLine($"{player1.Name}, YOU WIN!");
-        //            Console.WriteLine($"All enemy ships have been sunk!");
-        //            break;
-        //        }
-        //        Console.ReadKey();
-        //        Console.Clear();
-
-        //        player2.Attack(player1);
-        //        player1.Board.DisplayBoard();
-        //        if (player1.HasLost())
-        //        {
-        //            Console.WriteLine("You lose!");
-        //            Console.WriteLine("All your ships have sunk.");
-        //            break;
-        //        }
-        //        Console.ReadKey();
-        //    }
-        //}
+        
     }
 }

@@ -25,7 +25,7 @@ namespace BattleShipConsoleGame
         public void Update()
         {
             GameBoard.Welcome();
-            //Console.WriteLine($"{Name}'s game board has been updated!");
+            Console.WriteLine($"  {Name}'s game board ");
             Board.DisplayBoard();
         }
 
@@ -87,7 +87,8 @@ namespace BattleShipConsoleGame
             {
                 try
                 {
-                    
+                    Console.WriteLine();
+                    Console.WriteLine();
                     Console.WriteLine($"  {Name}, make your attack:");
                     Console.Write("  Enter X coordinate (0-9): ");
                     int x = int.Parse(Console.ReadLine());
