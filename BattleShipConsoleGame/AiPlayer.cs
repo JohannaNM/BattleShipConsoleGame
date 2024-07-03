@@ -52,22 +52,25 @@ namespace BattleShipConsoleGame
                 //    {
                 //        x = random.Next(0, 10);
                 //        y = random.Next(0, 10);
-                //    } 
+                //    }
                 //    while (opponent.Board.Attack(x, y) == "This coordinate has already been attacked. Try again.");
                 //}
                 else
                 {
-                    
-                    
-                        x = random.Next(0, 10);
-                        y = random.Next(0, 10);
-                   
+
+
+                    x = random.Next(0, 10);
+                    y = random.Next(0, 10);
+
                 }
 
                 string result = opponent.Board.Attack(x, y);
                 if (result != "  Invalid attack. Try again.")
                 {
-                    Console.WriteLine($"  {Name} attacked ({x}, {y}) and it was a {result.ToLower()}.");
+                    if(result == "  This coordinate has already been attacked. Try again.")
+                    { Console.WriteLine(result); continue; }
+                    GameBoard.Welcome();
+                    Console.WriteLine(ConsoleColors.Red + $"  {Name} attacked ({x}, {y}) and it was a {result}." + ConsoleColors.Reset);
 
                     if (result.Contains("Hit"))
                     {

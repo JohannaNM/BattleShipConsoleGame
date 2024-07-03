@@ -106,12 +106,12 @@ namespace BattleShipConsoleGame
                     return ConsoleColors.Red + $"  Hit and sunk a {hitShip.GetType().Name}!" + ConsoleColors.Reset;
                 }
               
-                return "  Hit!";
+                return ConsoleColors.Red + "  Hit!" + ConsoleColors.Reset;
             }
             else
             {
                 board[x, y] = 'O'; // Miss
-                return "  Miss!";
+                return ConsoleColors.Blue + "  Miss!" + ConsoleColors.Reset;
             }
             
         }
@@ -185,13 +185,11 @@ namespace BattleShipConsoleGame
         public static void Welcome()
         {
             Console.WriteLine();
-            Console.WriteLine("  *********************************************************************");
-            Console.WriteLine("  *                            BATTLESHIPS                            *");
-            Console.WriteLine("  *********************************************************************");
             Console.WriteLine();
-
+            Console.WriteLine("  ██████╗  █████╗ ████████╗████████╗██╗     ███████╗███████╗██╗  ██╗██╗██████╗ ██████╗ ███████╗\r\n  ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║     ██╔════╝██╔════╝██║  ██║██║██╔══██╗██╔══██╗██╔════╝\r\n  ██████╔╝███████║   ██║      ██║   ██║     █████╗  ███████╗███████║██║██████╔╝██████╔╝███████╗\r\n  ██╔══██╗██╔══██║   ██║      ██║   ██║     ██╔══╝  ╚════██║██╔══██║██║██╔═══╝ ██╔═══╝ ╚════██║\r\n  ██████╔╝██║  ██║   ██║      ██║   ███████╗███████╗███████║██║  ██║██║██║     ██║     ███████║\r\n  ╚═════╝ ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝     ╚══════╝\r\n                                                                                               ");
+            Console.WriteLine();
         }
-        
+
         public static void WelcomeMessage()
         {
             Console.WriteLine();
